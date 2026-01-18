@@ -4,9 +4,13 @@ namespace App\Models;
 
 use App\Enums\TicketStatus;
 use Illuminate\Database\Eloquent\Model;
+use \Spatie\MediaLibrary\HasMedia;
+use \Spatie\MediaLibrary\InteractsWithMedia;
 
-class Ticket extends Model
+class Ticket extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $fillable = [
         'customer_id',
         'subject',
@@ -20,6 +24,12 @@ class Ticket extends Model
         'status' => TicketStatus::class,
         'answered_at' => 'datetime',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('attachments')
+            ->useDisk('public');
+    }
 
     public function customer()
     {

@@ -12,7 +12,14 @@ class TicketController extends Controller
 {
     public function store(StoreTicketRequest $request, CreateTicketAction $createTicketAction): JsonResponse
     {
-        $ticket = $createTicketAction->execute($request->validated());
+        $data = $request->validated();
+        $files = $request->file('files', []);
+        if ($files === null) {
+            $files = [];
+        } elseif (!is_array($files)) {
+            $files = [$files];
+        }
+        $ticket = $createTicketAction->execute($data, $files);
         return (new TicketResource($ticket))
             ->response()
             ->setStatusCode(201);
