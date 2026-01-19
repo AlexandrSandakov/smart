@@ -2,17 +2,32 @@
 
 namespace App\Http\Controllers\Api\Manager;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Manager\ManagerTicketResource;
 use App\Models\Ticket;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\TicketResource;
+use Illuminate\Http\Request;
 
 class ManagerTicketController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $tickets = Ticket::query()->with('customer')->latest()->paginate(15);
-        
-        return TicketResource::collection($tickets)->response();
+        $tickets = Ticket::with('customer');
+
+        if ($request->filled('status')) {
+            $tickets->where('status', $request->query('status'));
+        }
+
+        if ($request->filled('phone')) {
+            $tickets->whereHas('customer', function ($query) use ($request) {
+                $query->where('phone', 'like', '%'.$request->query('phone').'%');
+            });
+        }
+
+        $tickets = $tickets
+            ->latest()
+            ->paginate(15);
+
+        return ManagerTicketResource::collection($tickets)->response();
     }
 }

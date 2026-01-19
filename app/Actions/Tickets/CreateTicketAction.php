@@ -2,9 +2,9 @@
 
 namespace App\Actions\Tickets;
 
-use App\Models\Ticket;
-use App\Models\Customer;
 use App\Enums\TicketStatus;
+use App\Models\Customer;
+use App\Models\Ticket;
 use Illuminate\Support\Facades\DB;
 
 class CreateTicketAction
@@ -21,7 +21,7 @@ class CreateTicketAction
                     'phone' => $data['customer_phone'],
                 ]
             );
-            
+
             $ticket = Ticket::create([
                 'customer_id' => $customer->id,
                 'subject' => $data['subject'],
@@ -29,7 +29,7 @@ class CreateTicketAction
                 'message' => $data['message'],
             ]);
 
-            if (!empty($files)) {
+            if (! empty($files)) {
                 foreach ($files as $file) {
                     $ticket->addMedia($file)
                         ->toMediaCollection('attachments');

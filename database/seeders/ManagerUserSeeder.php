@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class ManagerUserSeeder extends Seeder
 {
@@ -22,7 +20,7 @@ class ManagerUserSeeder extends Seeder
             ]
         );
 
-        if (!$manager->hasRole('manager')) {
+        if (! $manager->hasRole('manager')) {
             $manager->assignRole('manager');
         }
     }

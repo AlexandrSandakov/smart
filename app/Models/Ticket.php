@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Enums\TicketStatus;
 use Illuminate\Database\Eloquent\Model;
-use \Spatie\MediaLibrary\HasMedia;
-use \Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Ticket extends Model implements HasMedia
 {

@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Ticket;
-use App\Models\Customer;
-use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Enums\TicketStatus;
+use App\Models\Customer;
+use App\Models\Ticket;
+use App\Models\User;
+use Illuminate\Database\Seeder;
 use RuntimeException;
 
 class TicketsSeeder extends Seeder
@@ -18,15 +17,15 @@ class TicketsSeeder extends Seeder
     public function run(): void
     {
         $customer = Customer::inRandomOrder()->first();
-        
-        if (!$customer){
+
+        if (! $customer) {
 
             throw new RuntimeException('No customers found. Please seed customers before seeding tickets.');
         }
 
         $manager = User::role('manager')->first();
 
-        if (!$manager){
+        if (! $manager) {
 
             throw new RuntimeException('No manager user found. Please seed a manager user before seeding tickets.');
         }
