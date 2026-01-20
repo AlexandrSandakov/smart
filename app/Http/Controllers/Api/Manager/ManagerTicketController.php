@@ -18,9 +18,23 @@ class ManagerTicketController extends Controller
             $tickets->where('status', $request->query('status'));
         }
 
+        if ($request->filled('from_date')) {
+            $tickets->whereDate('created_at', '>=', $request->query('from_date'));
+        }
+
+        if ($request->filled('to_date')) {
+            $tickets->whereDate('created_at', '<=', $request->query('to_date'));
+        }
+
         if ($request->filled('phone')) {
             $tickets->whereHas('customer', function ($query) use ($request) {
                 $query->where('phone', 'like', '%'.$request->query('phone').'%');
+            });
+        }
+
+        if ($request->filled('email')) {
+            $tickets->whereHas('customer', function ($query) use ($request) {
+                $query->where('email', 'like', '%'.$request->query('email').'%');
             });
         }
 

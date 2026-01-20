@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\TicketStatus;
 use App\Models\Customer;
 use App\Models\Ticket;
 use App\Models\User;
@@ -30,22 +29,10 @@ class TicketsSeeder extends Seeder
             throw new RuntimeException('No manager user found. Please seed a manager user before seeding tickets.');
         }
 
-        Ticket::create([
-            'subject' => 'Sample Ticket Subject',
-            'message' => 'This is a sample ticket message.',
-            'customer_id' => $customer->id,
-            'manager_id' => $manager->id,
-            'status' => TicketStatus::NEW,
-            'answered_at' => null,
-        ]);
+        Ticket::factory()->count(5)->create();
 
-        Ticket::create([
-            'subject' => 'Another Ticket Subject',
-            'message' => 'This is another sample ticket message.',
-            'customer_id' => $customer->id,
-            'manager_id' => $manager->id,
-            'status' => TicketStatus::CLOSED,
-            'answered_at' => now(),
-        ]);
+        Ticket::factory()->count(5)->inProgress($manager)->create();
+
+        Ticket::factory()->count(5)->closed($manager)->create();
     }
 }

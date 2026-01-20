@@ -16,7 +16,7 @@ class ManagerUserSeeder extends Seeder
             ['email' => 'manager@example.com'],
             [
                 'name' => 'Manager User',
-                'password' => 'test1234',
+                'password' => 'password',
             ]
         );
 
