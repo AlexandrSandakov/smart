@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\TicketStatus;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -40,5 +42,15 @@ class Ticket extends Model implements HasMedia
     public function manager()
     {
         return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    public function scopeCreatedBetween(Builder $query, Carbon $from, Carbon $to)
+    {
+        return $query->whereBetween('created_at', [$from, $to]);
+    }
+
+    public function scopeWithStatus(Builder $query, TicketStatus $status)
+    {
+        return $query->where('status', $status);
     }
 }
