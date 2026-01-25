@@ -11,26 +11,67 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Tickets List</h3>
+                    <div class="flex justify-end mb-6">
+                        <form method="GET" action="{{ route('manager.tickets.index') }}"
+                            class="w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
+
+                            <div class="flex gap-2">
+                                <input type="text" name="q" value="{{ request('q') }}"
+                                    class="w-full rounded border-gray-300" placeholder="Search..." />
+
+                                <select name="status" class="w-36 rounded border-gray-300">
+                                    <option value="">All</option>
+                                    <option value="new" @selected(request('status') === 'new')>New</option>
+                                    <option value="in_progress" @selected(request('status') === 'in_progress')>In progress</option>
+                                    <option value="closed" @selected(request('status') === 'closed')>Closed</option>
+                                </select>
+
+                                <button class="px-4 py-2 rounded bg-gray-900 text-black">
+                                    Go
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ID</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Subject</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Message</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Customer</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created At</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($tickets as $ticket)
+                            @foreach ($tickets as $ticket)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->id }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->subject }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->message }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->customer?->name ?? 'N/A' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->status?->value }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->created_at->format('Y-m-d') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->id }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><a
+                                            href="{{ route('manager.tickets.show', $ticket) }}">
+                                            {{ $ticket->subject }}
+                                        </a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->message }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $ticket->customer?->name ?? 'N/A' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $ticket->status?->value }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $ticket->created_at->format('Y-m-d') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -47,4 +88,3 @@
     </div>
 
 </x-app-layout>
-

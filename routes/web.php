@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 // create routes for manger to manage tickets
 Route::middleware(['auth', 'role:manager'])->group(function () {
     Route::get('/manager/tickets', [ManagerTicketController::class, 'index'])->name('manager.tickets.index');
+    Route::get('/manager/tickets/{ticket}', [ManagerTicketController::class, 'show'])
+        ->name('manager.tickets.show');
 });
 
 require __DIR__.'/auth.php';

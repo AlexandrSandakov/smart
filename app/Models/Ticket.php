@@ -53,4 +53,27 @@ class Ticket extends Model implements HasMedia
     {
         return $query->where('status', $status);
     }
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (! empty($filters['q'])) {
+            $term = trim($filters['q']);
+
+            $query->where(function (Builder $q) use ($term) {
+                $q->where('subject', 'like', "%{$term}%")
+                    ->orWhere('message', 'like', "%{$term}%")
+                    ->orWhereHas('customer', function (Builder $c) use ($term) {
+                        $c->where('name', 'like', "%{$term}%")
+                            ->orWhere('email', 'like', "%{$term}%")
+                            ->orWhere('phone', 'like', "%{$term}%");
+                    });
+            });
+        }
+
+        return $query;
+    }
 }
