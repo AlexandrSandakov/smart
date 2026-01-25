@@ -19,6 +19,16 @@ class TicketResource extends JsonResource
             'status' => $this->status?->value,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'attachments' => $this->getMedia('attachments')->map(function ($media) {
+                return [
+                    'id' => $media->id,
+                    'file_name' => $media->file_name,
+                    'mime_type' => $media->mime_type,
+                    'size' => $media->size,
+                    'url' => $media->getUrl(),
+                    'created_at' => $media->created_at,
+                ];
+            })->values(),
         ];
     }
 }
